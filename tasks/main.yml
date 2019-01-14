@@ -16,11 +16,11 @@
     src: db.ldif
     dest: /tmp
 
-- name: Load ddbb template into ldap
+- name: Load db template into ldap
   command: ldapmodify -Y EXTERNAL  -H ldapi:/// -f /tmp/db.ldif
 
 - name: Load some schemas (ignoring duplicate entries error for idempotence)
-  command: "ldapadd -Y EXTERNAL -H ldapi:/// -f {{schema_path}}/{{item}}"
+  command: "ldapadd -Y EXTERNAL -H ldapi:/// -f {{ schema_path }}/{{ item }}"
   register: ldap_result_code
   failed_when: ldap_result_code.rc not in [0,80]
   changed_when: ldap_result_code.rc not in [0,80]
