@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+# Employee groups
+
+dn: cn=IT,ou=Groups,{{ ldap_basedn }}
+cn: IT
+gidNumber: 626
+objectClass: top
+objectclass: posixGroup
+
+dn: cn=Customer Service,ou=Groups,{{ ldap_basedn }}
+cn: Customer Service
+gidNumber: 627
+objectClass: top
+objectclass: posixGroup
+
+dn: cn=Development,ou=Groups,{{ ldap_basedn }}
+cn: Development
+gidNumber: 628
+objectClass: top
+objectclass: posixGroup
+
+dn: cn=Human Resources,ou=Groups,{{ ldap_basedn }}
+cn: Human Resources
+gidNumber: 629
+objectClass: top
+objectclass: posixGroup
+

@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+# Organization teams-in-space.com
+dn: {{ ldap_basedn }}
+dc: teams-in-space
+objectclass: dcObject
+objectclass: organizationalUnit
+ou: teams-in-space.com
+
+# Users
+dn: ou=People,{{ ldap_basedn }}
+objectClass: organizationalUnit
+ou: people
+
+# Groups
+dn: ou=Groups,{{ ldap_basedn }}
+objectClass: organizationalUnit
+ou: groups

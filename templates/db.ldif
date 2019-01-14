@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 dn: olcDatabase={{dbtype}},cn=config
 changetype: modify
 replace: olcSuffix

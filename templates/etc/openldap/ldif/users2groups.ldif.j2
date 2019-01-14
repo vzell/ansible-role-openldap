@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+dn: cn=Customer Service,ou=Groups,{{ ldap_basedn }}
+changetype: modify
+add: memberUid
+memberUid: hjennings
+
+dn: cn=Human Resources,ou=Groups,{{ ldap_basedn }}
+changetype: modify
+add: memberUid
+memberUid: hjennings
+
+dn: cn=IT,ou=Groups,{{ ldap_basedn }}
+changetype: modify
+add: memberUid
+memberUid: hjennings

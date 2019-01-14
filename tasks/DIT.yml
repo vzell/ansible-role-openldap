@@ -1,0 +1,42 @@
+- name: Create directories
+  file:
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('ldap') }}"
+    group: "{{ item.group | default('ldap') }}"
+    mode: "{{ item.mode | default('0755') }}"
+    state: "{{ item.state | default('directory') }}"
+  with_items:
+    - { dest: "/etc/openldap/ldif" }
+
+- name: Copy LDIF templates
+  template:
+    src: "./templates{{ item.dest }}.j2"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  with_items:
+    - { dest: "/etc/openldap/ldif/organization.ldif", owner: "ldap", group: "ldap" }
+    - { dest: "/etc/openldap/ldif/groups.ldif", owner: "ldap", group: "ldap" }
+    - { dest: "/etc/openldap/ldif/users.ldif", owner: "ldap", group: "ldap" }
+    - { dest: "/etc/openldap/ldif/users2groups.ldif", owner: "ldap", group: "ldap" }
+  register: template_result
+
+- name: Initializing an Organization in LDAP
+  command: ldapadd -cx -D "{{ ldap_auth.bind_dn }}" -w "{{ ldap_auth.bind_pw }}" -f /etc/openldap/ldif/organization.ldif
+  ignore_errors: true
+
+- name: Adding groups to LDAP
+  command: ldapadd -cx -D "{{ ldap_auth.bind_dn }}" -w "{{ ldap_auth.bind_pw }}" -f /etc/openldap/ldif/groups.ldif
+  ignore_errors: true
+
+- name: Adding users to LDAP
+  command: ldapadd -cx -D "{{ ldap_auth.bind_dn }}" -w "{{ ldap_auth.bind_pw }}" -f /etc/openldap/ldif/users.ldif
+  register: ldap_result_code
+#  failed_when: ldap_result_code.rc not in [68]
+  ignore_errors: true
+
+- name: Adding users to a group in LDAP
+  command: ldapmodify -xc -D "{{ ldap_auth.bind_dn }}" -w "{{ ldap_auth.bind_pw }}" -f /etc/openldap/ldif/users2groups.ldif
+  ignore_errors: true
+
