@@ -1,13 +1,7 @@
 ---
 - name: Install required packages
   yum:
-    name: "{{item}}"
+    name: ['openldap', 'openldap-servers', 'openldap-clients', 'python-ldap']
     state: present
     validate_certs: no
     disable_gpg_check: yes
-  with_items:
-    - openldap
-    - openldap-servers
-    - openldap-clients
-    - python-ldap
-
